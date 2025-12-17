@@ -13,7 +13,7 @@ import morgan from 'morgan';
 // routes 
 import userRoutes from './Routes/user.js'
 import AdminRoute from './Routes/Admin.js'
-import TransactionAdmin from './Routes/Transaction.js'
+import TransactionRoute from './Routes/Transaction.js'
 
 app.use(express.json())
 
@@ -27,7 +27,7 @@ app.use('/auth', userRoutes)
 // Admin Route 
 app.use('/Admin', AdminRoute)
 // Transaction Route 
-
+app.use('/transactions', TransactionRoute)
 
 
 
