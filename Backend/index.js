@@ -25,7 +25,7 @@ if(process.env.NODE_ENV === 'development'){
 // user Routes 
 app.use('/auth', userRoutes)
 // Admin Route 
-
+app.use('/Admin', AdminRoute)
 // Transaction Route 
 
 
