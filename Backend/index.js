@@ -23,11 +23,15 @@ if(process.env.NODE_ENV === 'development'){
 }
 
 // user Routes 
-app.use('/auth', userRoutes)
+app.use('/api/auth', userRoutes)
 // Admin Route 
-app.use('/Admin', AdminRoute)
+app.use('/api/Admin', AdminRoute)
 // Transaction Route 
-app.use('/transactions', TransactionRoute)
+app.use('/api/transactions', TransactionRoute)
+
+app.use('/api/health', (req,res)=>{
+    res.send('heay welcome to healthy route ')
+})
 
 // errors route 
 app.use(notFound)
