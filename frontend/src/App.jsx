@@ -1,14 +1,26 @@
-import { Route, Router } from 'react-router'
+import { Navigate, Route, Routes } from 'react-router'
 import './App.css'
+import LoginPage from './Pages/LoginPage'
+import RegisterPage from './Pages/RegisterPage'
+import DashboardPage from './Pages/DashboardPage'
+import TransactionPage from './Pages/TransactionPage'
+import ReportPage from './Pages/ReportPage'
+import AdminPage from './Pages/AdminPage'
 
 function App() {
  
 
   return (
     <div>
-        <Router>
-           {/* <Route path='/login'element={}/> */}
-        </Router>
+        <Routes>
+           <Route path='/login'element={<LoginPage />}/>
+           <Route path='/register'element={<RegisterPage/>}/>
+           <Route path='/dashboard' element={<DashboardPage/>}/>
+           <Route path='/transaction' element={<TransactionPage/>}/>
+           <Route path='/report' element={<ReportPage/>}/>
+           <Route path='/admin' element={<AdminPage/>}/>
+           <Route path='/' element={<Navigate to='/login'/>}/>
+        </Routes>
     </div>
   )
 }
