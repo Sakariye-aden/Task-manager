@@ -16,11 +16,13 @@ import { useNavigate } from 'react-router'
 import { useMutation } from '@tanstack/react-query'
 import api from '../../lib/Api/ApiClient'
 import { Loader } from 'lucide-react'
+import useAuthstore from '../../lib/Store/AuthStore'
 
 
 const LoginForm = () => {
 
    const navigate = useNavigate()
+    const { setAuth } =  useAuthstore()
 
     const [formData , setformData]= useState({
              email:"",
@@ -43,8 +45,14 @@ const LoginForm = () => {
            return response.data
        },
        onSuccess:(data)=>{
-         console.log('data success:', data);
-         navigate('/dashboard')
+            const user = data.user ;
+            const token = data.Token;
+           if(data.Token){
+             setAuth(user, token);
+
+             navigate('/dashboard')
+           }
+          
        },
        onError:(error)=>{
          console.log('error:',error);
