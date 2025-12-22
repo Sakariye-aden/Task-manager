@@ -14,6 +14,9 @@ import cors from 'cors'
 import userRoutes from './Routes/user.js'
 import AdminRoute from './Routes/Admin.js'
 import TransactionRoute from './Routes/Transaction.js'
+import helmet from 'helmet';
+
+app.use(helmet())
 
 app.use(express.json())
 
