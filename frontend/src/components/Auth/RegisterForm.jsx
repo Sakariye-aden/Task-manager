@@ -7,13 +7,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
+import { Loader } from 'lucide-react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from 'react-router'
 import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
+import api from '../../lib/Api/ApiClient'
 
 const RegisterForm = () => {
 
@@ -34,24 +34,25 @@ const RegisterForm = () => {
         setformData({...formData, [name]:value})
     }
 
-   
+  //  mutatation 
     const registerMutation= useMutation({
       mutationFn: async (userDAta) => {
-         const response = await axios.post('http://localhost:5000/api/auth/register', userDAta);
-           console.log('response:', response)
+         const response = await api.post('/auth/register', userDAta);
            return response.data
       },
       onSuccess:(data)=>{
-        console.log('data response:', data);
+        navigate('/login')
       },
       onError:(error)=>{
         console.log('error happened', error);
+        setError('error happaned')
       }
     })
 
 
    const handleSubmit = (e)=>{
      e.preventDefault();
+
 
       if(!formData.name || !formData.email || !formData.password){
         setError('all fields are required')
@@ -63,14 +64,15 @@ const RegisterForm = () => {
         return
       }
      
+    //  register mutate
       registerMutation.mutate({
          name : formData.name,
          email:formData.email,
          password : formData.password
       })
-
    }
 
+    
   
     
   return (
@@ -82,8 +84,9 @@ const RegisterForm = () => {
          <CardContent>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col gap-6">
-             {error && 
+             {error && (
                <p className='bg-destructive/50 p-2 rounded-md'>{error}</p>
+              )    
              }
             <div className="grid gap-2">
               <Label htmlFor="name">Name</Label>
@@ -134,7 +137,9 @@ const RegisterForm = () => {
               />
             </div>
              
-             <Button type="submit">Create Account</Button>
+             <Button type="submit">
+               {registerMutation.isPending ?  <Loader/> : 'create account'}
+             </Button>
           </div>
         </form>
       </CardContent>
