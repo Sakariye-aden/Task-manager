@@ -51,3 +51,9 @@ export const LoggIn = async (req, res, next) => {
       next(error)
    }
 }
+
+export const getProfile  = async (req, res) => {
+      
+   const user = req.user
+    res.json(user)
+}
