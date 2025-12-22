@@ -12,7 +12,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useNavigate } from 'react-router'
-
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
 
 const RegisterForm = () => {
 
@@ -33,6 +34,20 @@ const RegisterForm = () => {
         setformData({...formData, [name]:value})
     }
 
+   
+    const registerMutation= useMutation({
+      mutationFn: async (userDAta) => {
+         const response = await axios.post('http://localhost:5000/api/auth/register', userDAta);
+           console.log('response:', response)
+           return response.data
+      },
+      onSuccess:(data)=>{
+        console.log('data response:', data);
+      },
+      onError:(error)=>{
+        console.log('error happened', error);
+      }
+    })
 
 
    const handleSubmit = (e)=>{
@@ -43,12 +58,16 @@ const RegisterForm = () => {
          return
      }
 
-      if(formData.confirmpassword != formData.password){
+      if(formData.password !== formData.confirmpassword){
         setError('password must match');
         return
       }
      
-      
+      registerMutation.mutate({
+         name : formData.name,
+         email:formData.email,
+         password : formData.password
+      })
 
    }
 

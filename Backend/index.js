@@ -8,7 +8,7 @@ const app = express()
  dotenv.config()
 const PORT = process.env.PORT
 import morgan from 'morgan';
-
+import cors from 'cors'
 
 // routes 
 import userRoutes from './Routes/user.js'
@@ -17,6 +17,11 @@ import TransactionRoute from './Routes/Transaction.js'
 
 app.use(express.json())
 
+app.use(cors(
+       {
+        origin:['http://localhost:5173']
+       }
+    ))
 
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'))
