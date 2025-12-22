@@ -6,6 +6,7 @@ import DashboardPage from './Pages/DashboardPage'
 import TransactionPage from './Pages/TransactionPage'
 import ReportPage from './Pages/ReportPage'
 import AdminPage from './Pages/AdminPage'
+import ProtectedRoute from './components/Auth/ProtectedRoute'
 
 function App() {
  
@@ -15,7 +16,14 @@ function App() {
         <Routes>
            <Route path='/login'element={<LoginPage />}/>
            <Route path='/register'element={<RegisterPage/>}/>
-           <Route path='/dashboard' element={<DashboardPage/>}/>
+           <Route path='/dashboard' 
+             element={
+               <ProtectedRoute>
+                 <DashboardPage/>
+               </ProtectedRoute>
+              }
+           
+           />
            <Route path='/transaction' element={<TransactionPage/>}/>
            <Route path='/report' element={<ReportPage/>}/>
            <Route path='/admin' element={<AdminPage/>}/>
