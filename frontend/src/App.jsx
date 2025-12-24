@@ -7,6 +7,7 @@ import TransactionPage from './Pages/TransactionPage'
 import ReportPage from './Pages/ReportPage'
 import AdminPage from './Pages/AdminPage'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
+import ProtectedAdmin from './components/Auth/ProtectedAdmin'
 
 function App() {
  
@@ -26,7 +27,14 @@ function App() {
            />
            <Route path='/transaction' element={<TransactionPage/>}/>
            <Route path='/report' element={<ReportPage/>}/>
-           <Route path='/admin' element={<AdminPage/>}/>
+           <Route path='/admin' 
+             element={ 
+                <ProtectedAdmin>
+                   <AdminPage/>
+                </ProtectedAdmin>
+              }
+           
+           />
            <Route path='/' element={<Navigate to='/login'/>}/>
         </Routes>
     </div>
