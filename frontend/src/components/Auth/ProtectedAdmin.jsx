@@ -14,7 +14,6 @@ const ProtectedAdmin = ({ children }) => {
         queryKey: ['currenUser'],
         queryFn : async () => {
              const response = await api.get('/auth/me');
-             console.log('response:', response);
              return response.data
          },
          retry : 1

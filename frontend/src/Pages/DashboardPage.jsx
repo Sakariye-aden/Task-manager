@@ -244,7 +244,7 @@ const DashboardPage = () => {
 
          {/* main component */}
 
-         <div>
+         <div className="bg-card">
            <Outlet />
          </div>
        </div>
