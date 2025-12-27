@@ -1,12 +1,14 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
-import { Loader } from 'lucide-react';
+import { FolderArchive, Loader } from 'lucide-react';
 import { useState } from 'react';
 import api from '../lib/Api/ApiClient';
 import useAuthstore from '../lib/Store/AuthStore';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {Empty,EmptyContent,EmptyDescription, EmptyHeader,EmptyMedia,EmptyTitle} from "@/components/ui/empty"
 
-
+import {Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router'
 
 // income category 
 const incomeCatag = ["food & drink", "Housing", "Transport","Shoping","Health","Education","Entertainment","Bills & utility"]
@@ -80,6 +82,9 @@ const HomeDashboard = () => {
       const { user } = useAuthstore()
      const [result , setResult ] = useState([])
   
+     const navigate = useNavigate()
+
+    //  transactionQuery
       const {data , error, isLoading } = useQuery({
         queryKey: ['trans'],
         queryFn : async () => {
@@ -99,6 +104,27 @@ const HomeDashboard = () => {
        )
     }
    
+     if (data.length === 0) {
+       return (
+         <Empty>
+           <EmptyHeader>
+             <EmptyMedia variant="icon">
+               <FolderArchive />
+             </EmptyMedia>
+             <EmptyTitle>No data Yet</EmptyTitle>
+             <EmptyDescription>
+               You haven&apos;t created any Transaction yet. Get started by
+               creating your first project.
+             </EmptyDescription>
+           </EmptyHeader>
+           <EmptyContent>
+             <div className="flex gap-2">
+               <Button onClick={()=> navigate('/dashboard/transactions')}>Add transaction</Button>
+             </div>
+           </EmptyContent>
+         </Empty>
+       );
+     }
     
      const getTransAll = ()=>{
         const Alltrans = {
