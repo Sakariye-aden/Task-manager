@@ -45,16 +45,16 @@ const DashboardPage = () => {
    return (
      <div className="min-h-screen">
        {/* labtop designn */}
-       <div className="hidden md:flex   min-h-screen">
+       <div className="hidden md:flex  min-h-screen">
          {/* left bar */}
-         <div className="border-r bg-card">
+         <div className="border-r bg-card ">
            {/* nav */}
-           <div className="bg-card border-b  p-2">
+           <div className="bg-card border-b  p-2 sticky top-0">
              <span className="font-medium text-2xl text-chart-4 ">Finance</span>
              {isOpen && <span className="pl-2 text-xl ">Tracker</span>}
            </div>
 
-           <div className="h-110 flex flex-col gap-6 px-2 py-6 border-b">
+           <div className="h-110 flex flex-col gap-6 px-2 py-6 border-b sticky top-15">
              <Link to="/dashboard" className="flex items-center space-x-2">
                <LayoutDashboard className="w-6 h-6" />
                {isOpen && <span>Dashboard</span>}
@@ -83,28 +83,30 @@ const DashboardPage = () => {
                </Link>
              )}
            </div>
-           <div className="flex p-2">
-             <Avatar className="h-10 w-10">
-               <AvatarImage src="https://img.freepik.com/premium-vector/man-professional-business-casual-young-avatar-icon-illustration_1277826-629.jpg" />
-               <AvatarFallback>CN</AvatarFallback>
-             </Avatar>
-             <div className="flex flex-col overflow-hidden">
-               {isOpen && (
-                 <span className="font-medium text-lg">{user.name}</span>
-               )}
-               {isOpen && <span>{user.email}</span>}
+           <div className="fixed bottom-0 ">
+             <div className="flex p-2">
+               <Avatar className="h-10 w-10">
+                 <AvatarImage src="https://img.freepik.com/premium-vector/man-professional-business-casual-young-avatar-icon-illustration_1277826-629.jpg" />
+                 <AvatarFallback>CN</AvatarFallback>
+               </Avatar>
+               <div className="flex flex-col overflow-hidden">
+                 {isOpen && (
+                   <span className="font-medium text-lg">{user.name}</span>
+                 )}
+                 {isOpen && <span>{user.email}</span>}
+               </div>
              </div>
-           </div>
-           <div className="p-2 ">
-             <Button onClick={clearAuth}>
-               <LogOut />
-               Logout
-             </Button>
+             <div className="p-2 ">
+               <Button onClick={clearAuth}>
+                 <LogOut />
+                 Logout
+               </Button>
+             </div>
            </div>
          </div>
          {/* right bar  */}
          <div className="flex-1">
-           <div className="bg-card flex items-center justify-between p-1 border-b">
+           <div className="bg-card flex items-center justify-between p-1 border-b sticky top-0">
              <div className="flex space-x-2">
                <Menu onClick={() => setisOpen(!isOpen)} />
                {/* <h1>Dashboard</h1> */}
@@ -139,7 +141,7 @@ const DashboardPage = () => {
              </div>
            </div>
            {/* main component */}
-           <div className="bg-card h-screen">
+           <div className="bg-card min-h-screen">
              <Outlet />
            </div>
          </div>
