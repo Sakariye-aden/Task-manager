@@ -149,7 +149,7 @@ const DashboardPage = () => {
 
        {/* mobile  design  */}
        <div className="md:hidden">
-         <div className="bg-card py-2 px-4 border-b  flex  items-center justify-between">
+         <div className="bg-card py-2 px-4 border-b  flex  items-center justify-between sticky top-0">
            <Sheet>
              <SheetTrigger asChild>
                <Menu />
