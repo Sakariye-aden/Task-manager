@@ -8,10 +8,55 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 
+// income category 
+const incomeCatag = ["food & drink", "Housing", "Transport","Shoping","Health","Education","Entertainment","Bills & utility"]
+//  expense category 
+const expenseCatg= ["Salary", "Freelance", "Business","Investiment","Refound","other income"]
 
+function getCategoryIcon(categoryName) {
+  switch (categoryName) {
+    // Income categories
+    case "food & drink":
+      return "🍔";       // 
+    case "Housing":
+      return "🏠";           // 
+    case "Transport":
+      return "🚗";            // 
+    case "Shoping":
+      return "🛍️";    // 
+    case "Health":
+      return "❤️";      // 
+    case "Education":
+      return "🎓";  // 
+    case "Entertainment":
+      return "🎬";           // 
+    case "Bills & utility":
+      return "💡";           // 
 
+    // Expense categories
+    case "Salary":
+      return "💵";  // 
+    case "Freelance":
+      return "💻";     // 
+    case "Business":
+      return "📈";      // 
+    case "Investiment":
+      return "📊";      // 
+    case "Refound":
+      return "🔄";           // 
+    case "other income":
+      return "🌐";          // 
 
+    // Default fallback
+    default:
+      return "❓"; // 
+  }
+}
 
+// Example usage:
+console.log(getCategoryIcon("Transport")); // faCar
+console.log(getCategoryIcon("Salary"));    // faMoneyBillWave
+console.log(getCategoryIcon("Unknown"));   // faQuestionCircle
 
 
 const HomeDashboard = () => {
@@ -56,13 +101,9 @@ const HomeDashboard = () => {
 
     const {Alltrans , TotalIncome, TotalExpense, TotalBalance } = getTransAll()
 
-    console.log("All:",Alltrans.All);
-    console.log("income", Alltrans.Income);
-    console.log('expense', Alltrans.expense);
 
-    console.log('Totatl Income', TotalIncome);
-    console.log('Totatl Expense', TotalExpense);
-    console.log('Total Balence :', TotalBalance);
+
+  
 
 
   return (
