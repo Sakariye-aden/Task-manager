@@ -68,9 +68,8 @@ function formatShortDate(dateInput) {
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
 
-const incomeCatag = ["food & drink", "Housing", "Transport","Shoping","Health","Education","Entertainment","Bills & utility"]
-//  expense category 
-const expenseCatg= ["Salary", "Freelance", "Business","Investiment","Refound","other income"]
+const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health","Education","Entertainment","Bills & utility", "Salary", "Freelance", "Business","Investiment","Refound","other income"]
+
 
 
 
@@ -238,17 +237,20 @@ const expenseCatg= ["Salary", "Freelance", "Business","Investiment","Refound","o
                 />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="type">category</Label>
+                <Label htmlFor="type">expense category *</Label>
                 <Select>
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select a fruit" />
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="income">income</SelectItem>
-                    <SelectItem value="expense">expense</SelectItem>
+                  <SelectContent className='overflow-y-scroll'>
+                    {expenseCatag.map(item =>(
+                       <SelectItem value={item} key={item} >{item}</SelectItem>
+                    ))
+                    }
                   </SelectContent>
                 </Select>
               </div>
+            
               <div className="grid gap-3">
                 <Label htmlFor="amount">Amount *</Label>
                 <Input
@@ -260,7 +262,7 @@ const expenseCatg= ["Salary", "Freelance", "Business","Investiment","Refound","o
                 />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="type">Type</Label>
+                <Label htmlFor="type">Type *</Label>
                 <Select>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a fruit" />
