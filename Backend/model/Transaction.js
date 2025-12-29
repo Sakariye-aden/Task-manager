@@ -7,7 +7,7 @@ const transactionSchame = new mongoose.Schema(
         amount : Number,
         type: String,
         category: String,
-        date:Date,
+         saving: Number,
         createdBy: {
             type: mongoose.Schema.Types.ObjectId,
             ref:'User',

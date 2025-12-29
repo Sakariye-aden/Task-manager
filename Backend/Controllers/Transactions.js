@@ -1,3 +1,4 @@
+import { success } from "zod";
 import transaction from "../model/Transaction.js";
 
 export const createTransaction = async (req, res, next) => {
@@ -6,7 +7,10 @@ export const createTransaction = async (req, res, next) => {
         
      const newOne = await transaction.create({...req.body, createdBy:req.user._id})
         console.log('trans:', newOne);
-       res.status(201).json(newOne)
+       res.status(201).json({
+         success : true ,
+         message : "Transaction Created successFully"
+       })
 
     } catch (error) {
         next(error)
@@ -69,7 +73,10 @@ export const updateTransaction = async (req, res, next) => {
             message:"no transaction to update.."
         })
 
-        res.status(201).json(update)
+        res.status(201).json({
+            success : true ,
+            message : "Transaction Updated successfully"
+        })
     } catch (error) {
        next(error) 
     }
@@ -88,7 +95,7 @@ export const deleteTransaction = async (req, res, next) => {
             message:"no transaction to delete.."
         })
 
-        res.json(`${id} deleted successfully...`)
+        res.json(`  Transaction deleted successfully...`)
 
     } catch (error) {
        next(error) 

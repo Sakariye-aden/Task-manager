@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {Button} from'@/components/ui/button'
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import api from '../lib/Api/ApiClient';
 import {  Loader, Pencil, Trash } from 'lucide-react';
 import {
@@ -84,7 +84,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
       const [isOpen, setIsOpen]= useState(false)
       const [formData , setformData]=useState({
          title : "",
-         amount:1,
+         amount:0,
          type:"",
          category :""
       })
@@ -104,17 +104,35 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
 
        
 
-             //  transactionQuery
+     //  Get transactionQuery
       const {data , error, isLoading } = useQuery({
         queryKey: ['trans'],
         queryFn : async () => {
            const response = await api.get('/transactions');
-            console.log('response trans :', response);
- 
             return response.data
          }
       })
      
+      // post Mutation trans
+       const createMutation = useMutation({
+          mutationFn : async () => {
+             const response = await api.post('/transactions');
+               console.log('post trans', response);
+              return response.data
+           },
+           onSuccess : (data)=>{
+               console.log('data trans:', data);
+           },
+           onError: (error)=>{
+              console.log('error trans',error);
+              setError(error.message)
+           }
+       })
+
+      // edit mutation trans
+
+
+      // delete mutation trans
 
        if(isLoading){
        return (
@@ -135,6 +153,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
       setformData({ ...formData, [field]: value });     
     }
 
+
     //   submit form 
      const handleSubmit = (e)=>{
        e.preventDefault();
@@ -145,9 +164,14 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
           return
        }
 
-         setError(null)
+        const userData = {
+           title : formData.title.trim(),
+           amount : formData.amount,
+           type: formData.type,
+           category : formData.category
+        }
          
-          console.log('handle submit :', formData);
+         console.log('userData',userData);
      }
 
 
@@ -227,7 +251,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
                   <td className="py-2 text-gray-500">
                     {formatShortDate(item.createdAt)}
                   </td>
-                  <td className="px-4 py-2 font-medium text-green-600">
+                  <td className={`px-4 py-2 font-medium ${item.type === "income" ? "text-green-500": "text-red-500" }`}>
                     ${item.amount}
                   </td>
                   <td className="px-4 py-2 flex ">
@@ -260,7 +284,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit}>
-            <div className="grid gap-4">
+            <div className="grid gap-4 mb-4">
               {Error && (
                 <p className="bg-destructive/50 p-2 rounded-md">{Error}</p>
               )}
@@ -276,7 +300,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
                 />
               </div>
               <div className="grid gap-3">
-                <Label htmlFor="type">expense category *</Label>
+                <Label htmlFor="type">category *</Label>
                 <Select 
                   onValueChange={handleSelect('category')}
                  value={formData.category}
@@ -302,7 +326,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
                   name="amount"
                   value={formData.amount}
                   onChange={handleChange}
-                  min={1}
+                  min={0}
                 />
               </div>
               <div className="grid gap-3">
