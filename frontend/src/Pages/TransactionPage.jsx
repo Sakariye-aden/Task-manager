@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import {Button} from'@/components/ui/button'
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '../lib/Api/ApiClient';
 import {  Loader, Pencil, Trash } from 'lucide-react';
 import {
@@ -13,6 +13,7 @@ import { Select,SelectContent,
   SelectItem,SelectTrigger,SelectValue,
 } from "@/components/ui/select"
 
+import toast from 'react-hot-toast';
 
 
 
@@ -86,18 +87,18 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
          title : "",
          amount:0,
          type:"",
-         category :""
+         category :"",
+         saving:0
       })
 
-      const [Error , setError ] = useState(null)
+      const queryClient = useQueryClient()
        
        const HandleOpen = ()=>{
          setIsOpen(false)
          setisEdit(null)
        }
-       
+      // handle Edit 
        const handleEdit = (item)=>{
-        //  setIsOpen(true)
            setisEdit(item)
        }
 
@@ -122,6 +123,8 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
            },
            onSuccess : (data)=>{
                console.log('data trans:', data);
+               queryClient.invalidateQueries('trans')
+               toast.success('transaction created successfully.')
            },
            onError: (error)=>{
               console.log('error trans',error);
@@ -134,13 +137,15 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
 
       // delete mutation trans
 
+
+
        if(isLoading){
        return (
           <div className='h-screen flex justify-center items-center'>
              <Loader className='animate-spin text-3xl' />
           </div>
        )
-    }
+     }
    
     // handle change 
      const handleChange = (e)=>{
@@ -160,18 +165,25 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
           
        if(!formData.title || !formData.amount ||!formData.category || !formData.type ){
           console.log('errors happaned.');
-          setError('All fields required.')
+          toast.error('all fields are required * ')
           return
        }
 
         const userData = {
            title : formData.title.trim(),
-           amount : formData.amount,
+           amount : Number(formData.amount),
            type: formData.type,
-           category : formData.category
+           category : formData.category,
+           saving : Number(formData.saving)
         }
          
          console.log('userData',userData);
+
+        //  create Trans 
+        // createMutation.mutate({
+        //    userData
+        // })
+        setIsOpen(false)
      }
 
 
@@ -251,7 +263,11 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
                   <td className="py-2 text-gray-500">
                     {formatShortDate(item.createdAt)}
                   </td>
-                  <td className={`px-4 py-2 font-medium ${item.type === "income" ? "text-green-500": "text-red-500" }`}>
+                  <td
+                    className={`px-4 py-2 font-medium ${
+                      item.type === "income" ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
                     ${item.amount}
                   </td>
                   <td className="px-4 py-2 flex ">
@@ -285,9 +301,6 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
           </DialogHeader>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 mb-4">
-              {Error && (
-                <p className="bg-destructive/50 p-2 rounded-md">{Error}</p>
-              )}
               <div className="grid gap-3">
                 <Label htmlFor="title">Title *</Label>
                 <Input
@@ -301,16 +314,16 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="type">category *</Label>
-                <Select 
-                  onValueChange={handleSelect('category')}
-                 value={formData.category}
+                <Select
+                  onValueChange={handleSelect("category")}
+                  value={formData.category}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
                   <SelectContent className="overflow-y-scroll">
                     {expenseCatag.map((item) => (
-                      <SelectItem value={item} key={item} >
+                      <SelectItem value={item} key={item}>
                         {item}
                       </SelectItem>
                     ))}
@@ -331,9 +344,9 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="type">Type *</Label>
-                <Select 
-                  onValueChange={handleSelect('type')}
-                   value={formData.type}
+                <Select
+                  onValueChange={handleSelect("type")}
+                  value={formData.type}
                 >
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select a fruit" />
@@ -343,6 +356,17 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
                     <SelectItem value="expense">expense</SelectItem>
                   </SelectContent>
                 </Select>
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="saving">saving (optional)</Label>
+                <Input
+                  type="number"
+                  id="saving"
+                  name="saving"
+                  value={formData.saving}
+                  onChange={handleChange}
+                  min={0}
+                />
               </div>
             </div>
             <DialogFooter>

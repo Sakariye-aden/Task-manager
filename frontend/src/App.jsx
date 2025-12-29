@@ -9,6 +9,8 @@ import AdminPage from './Pages/AdminPage'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
 import ProtectedAdmin from './components/Auth/ProtectedAdmin'
 import HomeDashboard from './Pages/HomeDashboard'
+import  { Toaster } from 'react-hot-toast';
+
 
 function App() {
  
@@ -38,6 +40,7 @@ function App() {
              </Route>
            <Route path='/' element={<Navigate to='/login'/>}/>
         </Routes>
+        <Toaster />
     </div>
   )
 }
