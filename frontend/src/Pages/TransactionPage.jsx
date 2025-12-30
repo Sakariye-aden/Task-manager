@@ -5,8 +5,12 @@ import api from '../lib/Api/ApiClient';
 import {  Loader, Pencil, Trash } from 'lucide-react';
 import {
   Dialog, DialogClose,DialogContent,DialogDescription, DialogFooter, DialogHeader,
-  DialogTitle, DialogTrigger,
+  DialogTitle, 
 } from "@/components/ui/dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription,AlertDialogFooter,
+   AlertDialogHeader,AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select,SelectContent,
@@ -83,7 +87,9 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
  const TransactionPage = () => {
 
       const [isEdit , setisEdit ] = useState(null)
+      const [isDelete , setIsDelete ]= useState(null)
       const [isOpen, setIsOpen]= useState(false)
+      const [isDeleteOpen , setIsDeleteOpen ]=useState(false)
       const [formData , setformData]=useState({
          title : "",
          amount:0,
@@ -97,6 +103,8 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
        const HandleOpen = ()=>{
          setIsOpen(false)
          setisEdit(null)
+         setIsDelete(null)
+         setIsDeleteOpen(false)
        }
       // handle Edit 
        const handleEdit = (item)=>{
@@ -111,7 +119,11 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
             saving: item.saving
          })
        }
-
+   
+      // handle Delete 
+      const handleDelete = (item)=>{
+         setIsDelete(item)
+      } 
 
        
 
@@ -131,7 +143,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
               return response.data
            },
            onSuccess : ()=>{
-               queryClient.invalidateQueries('trans')
+               queryClient.invalidateQueries(['trans'])
                toast.success('transaction created successfully.')
                setIsOpen(false)
            },
@@ -149,7 +161,7 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
           },
           onSuccess : (data)=>{
             toast.success(data.message)
-            queryClient.invalidateQueries('trans')
+            queryClient.invalidateQueries(['trans'])
              setisEdit(null)
           },
           onError : (error)=>{
@@ -158,6 +170,23 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
        })
 
       // delete mutation trans
+
+      const DeleteMutation  = useMutation({
+        mutationFn : async () => {
+           const response = await api.delete(`/transactions/${isDelete._id}`);
+           return response.data;
+
+         },
+         onSuccess : (data)=>{
+           toast.success(data)
+           queryClient.invalidateQueries(['trans'])
+           setIsDeleteOpen(false)
+         },
+         onError :(error)=>{
+            toast.error(errorhandle(error))
+            console.log('error delete:', error);
+         }
+      })
    
     // handle change 
      const handleChange = (e)=>{
@@ -169,6 +198,15 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
       setformData({ ...formData, [field]: value });     
     }
 
+     const DeleteConfirmation = async () => {
+          try {
+             await DeleteMutation.mutateAsync(isDelete._id);
+             setIsOpen(false)
+          } catch (error) {
+            toast.error('delete confirmation Deleted..');
+            console.log('corfirm delete');
+          }
+       }
 
     //   submit form 
      const handleSubmit = (e)=>{
@@ -320,7 +358,10 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
                     >
                       <Pencil className="w-4 h-4 text-blue-500" />
                     </button>
-                    <button className="p-1 text-sm rounded cursor-pointer">
+                    <button 
+                     className="p-1 text-sm rounded cursor-pointer"
+                       onClick={()=> handleDelete(item)}
+                     >
                       <Trash className="w-4 h-4 text-red-500" />
                     </button>
                   </td>
@@ -417,15 +458,49 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
                 <Button variant="outline">Cancel</Button>
               </DialogClose>
               <Button type="submit">
-                {createMutation.isPending || UpdateMutation.isPending ? 
-                   <span className='flex justify-center items-center gap-2'><Loader className='animate-spin'/>Save changes</span> 
-                 : "Save changes"
-                }  
+                {createMutation.isPending || UpdateMutation.isPending ? (
+                  <span className="flex justify-center items-center gap-2">
+                    <Loader className="animate-spin" />
+                    Save changes
+                  </span>
+                ) : (
+                  "Save changes"
+                )}
               </Button>
             </DialogFooter>
           </form>
         </DialogContent>
       </Dialog>
+
+
+      {/* alert Dialog  */}
+      <AlertDialog open={isDeleteOpen || !!isDelete} onOpenChange={HandleOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure to delete ?</AlertDialogTitle>
+            <AlertDialogDescription>
+               <span className='text-lg font-medium pr-1'>{isDelete?.title}</span>cannot be undone. This will permanently delete your
+              account and remove your data from our servers
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+                <Button onClick={DeleteConfirmation}>
+                   {
+                     DeleteMutation.isPending ? (
+                     <span className="flex justify-center items-center gap-2">
+                      <Loader className="animate-spin" />
+                        Delete
+                     </span>
+                     )
+                    :  "Delete"
+                   }
+                </Button>
+
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
