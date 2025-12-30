@@ -21,7 +21,15 @@ export const createTransaction = async (req, res, next) => {
 export const getAlltrans = async (req,res, next) => {
      
     try {
-        const Alltrans = await transaction.find({createdBy: req.user._id})
+        const Alltrans = await transaction.aggregate([
+            { $match : { createdBy: req.user._id } },
+            { 
+             $sort: { createdBy: -1 } 
+            },
+             { $limit: 10 }
+             
+        ])
+        // const Alltransg = await transaction.find({createdBy: req.user._id})
         
         res.json(Alltrans)
     } catch (error) {
