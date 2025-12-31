@@ -269,8 +269,15 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
        )
      }
 
+      
+      // filer data 
+       const Income = data?.filter((item)=> item.type === 'income');
+      const  expense = data?.filter((item)=> item.type === 'expense')
 
+       const TotalIncome = Income.reduce((acc, curr) => acc + curr.amount, 0);
+        const TotalExpense = expense.reduce((acc, curr) => acc + curr.amount, 0);
 
+    
 
   return (
     <div className="bg-card h-screen p-6 ">
@@ -287,17 +294,17 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
 
       {/* summary card  */}
       <div className="flex space-x-3 md:space-x-6 p-3  md:p-6">
-        <div className="bg-blue-500 w-full p-2 flex flex-col  rounded-md shadow-xl">
+        <div className="bg-blue-500 w-full p-2 flex flex-col text-white rounded-md shadow-xl">
           <span className="font-medium text-lg">Transactions</span>
-          <span>{30}</span>
+          <span>{data?.length}</span>
         </div>
-        <div className="bg-green-500 w-full p-2 flex flex-col rounded-md shadow-xl">
+        <div className="bg-green-500 w-full p-2 flex flex-col text-white rounded-md shadow-xl">
           <span className="font-medium text-lg">Income</span>
-          <span>{30}</span>
+          <span>{TotalIncome}</span>
         </div>
-        <div className="bg-red-500 w-full p-2 flex flex-col  rounded-md shadow-xl">
+        <div className="bg-red-500 w-full p-2 flex flex-col text-white rounded-md shadow-xl">
           <span className="font-medium text-lg">Expense</span>
-          <span>{30}</span>
+          <span>{TotalExpense}</span>
         </div>
       </div>
 
