@@ -1,14 +1,16 @@
 import { useQuery } from "@tanstack/react-query"
 import api from "../lib/Api/ApiClient";
-import { Loader } from "lucide-react";
+import { FolderArchive, Loader } from "lucide-react";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, LineElement,
   PointElement,  Title, Filler} from 'chart.js';
 
-
 import { Line ,  Doughnut  } from "react-chartjs-2";
+import {Empty,EmptyContent,EmptyDescription, EmptyHeader,EmptyMedia,EmptyTitle} from "@/components/ui/empty"
+import {Button } from '@/components/ui/button';
 
 import useThemeStore from "../lib/Store/ThemeStore";
+import { useNavigate } from "react-router";
 
 
 
@@ -16,11 +18,13 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, ChartD
   PointElement,  Title, Filler);
 
 
-
+    
 
 
 
 const ReportPage = () => {
+
+    const navigate = useNavigate()
 
     const { theme }= useThemeStore()
  
@@ -43,6 +47,27 @@ const ReportPage = () => {
        )
      }
 
+      if (data.length === 0) {
+             return (
+               <Empty className='h-3/4  flex justify-center items-center'>
+                 <EmptyHeader>
+                   <EmptyMedia variant="icon">
+                     <FolderArchive />
+                   </EmptyMedia>
+                   <EmptyTitle>📊 No data Available.</EmptyTitle>
+                   <EmptyDescription>
+                     You haven&apos;t created any Transaction yet. Get started by
+                     creating your first Expense.
+                   </EmptyDescription>
+                 </EmptyHeader>
+                 <EmptyContent>
+                   <div className="flex gap-2">
+                     <Button onClick={()=> navigate('/dashboard/transactions')}>Add Expense</Button>
+                   </div>
+                 </EmptyContent>
+               </Empty>
+             );
+       }
 
 
      const Expenses = data?.filter((item)=> item.type === 'expense');

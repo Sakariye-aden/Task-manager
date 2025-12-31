@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {Button} from'@/components/ui/button'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import api from '../lib/Api/ApiClient';
-import {  Loader, Pencil, Trash } from 'lucide-react';
+import {  FolderArchive, Loader, Pencil, Trash } from 'lucide-react';
 import {
   Dialog, DialogClose,DialogContent,DialogDescription, DialogFooter, DialogHeader,
   DialogTitle, 
@@ -16,6 +16,8 @@ import { Label } from "@/components/ui/label"
 import { Select,SelectContent,
   SelectItem,SelectTrigger,SelectValue,
 } from "@/components/ui/select"
+
+import {Empty,EmptyContent,EmptyDescription, EmptyHeader,EmptyMedia,EmptyTitle} from "@/components/ui/empty"
 
 import toast from 'react-hot-toast';
 import { errorhandle } from '../utility/errorHandle';
@@ -181,10 +183,10 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
            toast.success(data)
            queryClient.invalidateQueries(['trans'])
            setIsDeleteOpen(false)
+            setIsDelete(null)
          },
          onError :(error)=>{
             toast.error(errorhandle(error))
-            console.log('error delete:', error);
          }
       })
    
@@ -313,70 +315,93 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
         <h2 className="text-xl font-medium py-2">
           Recent Transaction History{" "}
         </h2>
-        <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
-          <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
-            <thead className="bg-gray-100 text-gray-700 sticky top-0">
-              <tr>
-                <th className="px-4 py-2 text-left text-sm font-semibold">
-                  Icon
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold">
-                  Title
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold">
-                  Category
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold">
-                  Date
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold">
-                  Amount
-                </th>
-                <th className="px-4 py-2 text-left text-sm font-semibold">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {data.map((item) => (
-                <tr
-                  key={item._id}
-                  className="hover:bg-gray-50 transition-colors duration-200"
-                >
-                  <td className="px-4 py-2">
-                    {getCategoryIcon(item.category)}
-                  </td>
-                  <td className="px-4 py-2 text-gray-800">{item.title}</td>
-                  <td className="px-4 py-2 text-gray-600">{item.category}</td>
-                  <td className="py-2 text-gray-500">
-                    {formatShortDate(item.createdAt)}
-                  </td>
-                  <td
-                    className={`px-4 py-2 font-medium ${
-                      item.type === "income" ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                    ${item.amount}
-                  </td>
-                  <td className="px-4 py-2 flex ">
-                    <button
-                      className="p-1  text-sm  rounded cursor-pointer "
-                      onClick={() => handleEdit(item)}
-                    >
-                      <Pencil className="w-4 h-4 text-blue-500" />
-                    </button>
-                    <button 
-                     className="p-1 text-sm rounded cursor-pointer"
-                       onClick={()=> handleDelete(item)}
-                     >
-                      <Trash className="w-4 h-4 text-red-500" />
-                    </button>
-                  </td>
+        {data.length === 0 ? (
+          <Empty className="flex justify-center items-center">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <FolderArchive />
+              </EmptyMedia>
+              <EmptyTitle> No transactions Found </EmptyTitle>
+              <EmptyDescription>
+                 Start tracking your money today 
+              </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <div className="flex gap-2">
+                <Button onClick={() =>  setIsOpen(true)}>
+                  Add Transactions
+                </Button>
+              </div>
+            </EmptyContent>
+          </Empty>
+         ) : (
+          <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
+            <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
+              <thead className="bg-gray-100 text-gray-700 sticky top-0">
+                <tr>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Icon
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Title
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Category
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Date
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Amount
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {data.map((item) => (
+                  <tr
+                    key={item._id}
+                    className="hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <td className="px-4 py-2">
+                      {getCategoryIcon(item.category)}
+                    </td>
+                    <td className="px-4 py-2 text-gray-800">{item.title}</td>
+                    <td className="px-4 py-2 text-gray-600">{item.category}</td>
+                    <td className="py-2 text-gray-500">
+                      {formatShortDate(item.createdAt)}
+                    </td>
+                    <td
+                      className={`px-4 py-2 font-medium ${
+                        item.type === "income"
+                          ? "text-green-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      ${item.amount}
+                    </td>
+                    <td className="px-4 py-2 flex ">
+                      <button
+                        className="p-1  text-sm  rounded cursor-pointer "
+                        onClick={() => handleEdit(item)}
+                      >
+                        <Pencil className="w-4 h-4 text-blue-500" />
+                      </button>
+                      <button
+                        className="p-1 text-sm rounded cursor-pointer"
+                        onClick={() => handleDelete(item)}
+                      >
+                        <Trash className="w-4 h-4 text-red-500" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
       {/* Dialog */}
       <Dialog open={isOpen || !!isEdit} onOpenChange={HandleOpen}>
@@ -479,32 +504,34 @@ const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health",
         </DialogContent>
       </Dialog>
 
-
       {/* alert Dialog  */}
       <AlertDialog open={isDeleteOpen || !!isDelete} onOpenChange={HandleOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Are you absolutely sure to delete ?</AlertDialogTitle>
+            <AlertDialogTitle>
+              Are you absolutely sure to delete ?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-               <span className='text-lg font-medium pr-1'>{isDelete?.title}</span>cannot be undone. This will permanently delete your
-              account and remove your data from our servers
+              <span className="text-lg font-medium pr-1">
+                {isDelete?.title}
+              </span>
+              cannot be undone. This will permanently delete your account and
+              remove your data from our servers
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-                <Button onClick={DeleteConfirmation}>
-                   {
-                     DeleteMutation.isPending ? (
-                     <span className="flex justify-center items-center gap-2">
-                      <Loader className="animate-spin" />
-                        Delete
-                     </span>
-                     )
-                    :  "Delete"
-                   }
-                </Button>
-
+            <Button onClick={DeleteConfirmation}>
+              {DeleteMutation.isPending ? (
+                <span className="flex justify-center items-center gap-2">
+                  <Loader className="animate-spin" />
+                  Delete
+                </span>
+              ) : (
+                "Delete"
+              )}
+            </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

@@ -8,28 +8,27 @@ const useAuthstore = create(
         {
            user : null,
            token :null,
-           isAuthenticted :false,
+           isAuthenticated :false,
 
            setAuth: (userData, token)=>set({
                user : userData,
                token,
-               isAuthenticted: true
+               isAuthenticated: true
              }),
 
            clearAuth : ()=>set({
-              user : null,
+              user : null ,
               token:null,
-              isAuthenticted: false
-           })  ,
-
+              isAuthenticated: false
+           }),
            getToken :()=>get().token
         }),
         {
             name:"testAuth",
             partialize : (state)=>({
-                user:state.user,
-                token : state.token,
-                isAuthenticted: state.isAuthenticted
+                user : state.user ,
+                token : state.token  ,
+                isAuthenticated : state.isAuthenticated 
             })
         }
 )
