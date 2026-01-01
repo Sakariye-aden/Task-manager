@@ -1,6 +1,10 @@
 import transaction from '../model/Transaction.js'
 import User from '../model/user.js'
 
+
+
+
+// total Users Transactions , Incomes , expenses
 export const AdminInfo = async (req, res, next) => {
     
     try {
@@ -31,4 +35,17 @@ export const AdminInfo = async (req, res, next) => {
     } catch (error) {
         next(error)
     }
+}
+
+
+export const UserInfoAdmin = async (req, res, next ) => {
+   
+   try {
+       const AllUsers = await User.find().select('-password');
+
+        res.json(AllUsers);
+
+   } catch (error) {
+     next(error)
+   }
 }
