@@ -67,3 +67,39 @@ export const UpdateRole = async (req, res, next) => {
    }
 
 }
+
+
+// AllTransaction with pagination 
+
+export const AdminPagination = async (req, res, next) => {
+   
+    // Get page & limit from query params (default: page=1, limit=5)
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 7;
+
+  // Calculate skip
+  const skip = (page - 1) * limit;
+
+     try {
+
+        const MoreTransaction = await transaction.find()
+                         .sort({ createdAt: -1 }) // newest first
+                         .skip(skip)
+                         .limit(limit)
+
+       const totalTransactions = await transaction.countDocuments();
+      const totalPages = Math.ceil(totalTransactions / limit);
+ 
+       res.json({
+           page,
+          totalPages,
+         totalTransactions,
+        MoreTransaction,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
+       })
+
+     } catch (error) {
+        next(error)
+     }
+}
