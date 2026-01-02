@@ -12,7 +12,13 @@ import { AlertDialog, AlertDialogCancel,
 import {Button } from '@/components/ui/button'
 import toast from 'react-hot-toast';
 
+import { expenseCatag , getCategoryIcon } from './TransactionPage'
 
+
+
+   console.log("Getag fn",getCategoryIcon('transport'));
+   
+   console.log('Expnse :', expenseCatag);
 
 
 
@@ -63,10 +69,8 @@ import toast from 'react-hot-toast';
               toast.success(data);
                queryClient.invalidateQueries(['adminInfo'])
                setEditRole(null)
-              console.log('data updated:',data);
             },
             onError : (error)=>{
-              console.log('error :', error);
               toast.error('error occured ')
             }
          })
@@ -200,7 +204,10 @@ import toast from 'react-hot-toast';
           </div>
            </div>
       {/* cateGory management */}
-
+           <h3 className='text-xl font-medium py-4 my-3 '>Category Management</h3>
+          <div>
+             
+          </div>
       {/* Transaction monitoring */}
 
 

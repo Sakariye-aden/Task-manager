@@ -25,7 +25,7 @@ import { errorhandle } from '../utility/errorHandle';
 
 
 
-function getCategoryIcon(categoryName) {
+export function getCategoryIcon(categoryName) {
   switch (categoryName) {
     // Income categories
     case "food & drink":
@@ -76,7 +76,7 @@ function formatShortDate(dateInput) {
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
 
-const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health","Education","Entertainment","Bills & utility", "Salary", "Freelance", "Business","Investiment","Refound","other income"]
+export const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","Health","Education","Entertainment","Bills & utility", "Salary", "Freelance", "Business","Investiment","Refound","other income"]
 
 
 
