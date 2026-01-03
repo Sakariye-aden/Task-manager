@@ -1,20 +1,21 @@
-import React, { useState } from 'react'
+import { useState } from 'react';
 
-import { ArrowRightLeft, Loader, Pencil, User } from 'lucide-react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ArrowRightLeft, FolderArchive, Loader, Pencil, User } from 'lucide-react';
 
-import api from '../lib/Api/ApiClient'
+import api from '../lib/Api/ApiClient';
 
-import { AlertDialog, AlertDialogCancel,
-  AlertDialogContent, AlertDialogDescription,AlertDialogFooter,
-   AlertDialogHeader,AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
-import {Button } from '@/components/ui/button'
+import {
+  AlertDialog, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { Button } from '@/components/ui/button';
 import toast from 'react-hot-toast';
 
-import { expenseCatag , getCategoryIcon } from './TransactionPage'
 import AdminTransaction from '../components/Dashboard/AdminTransaction';
 
+import { Empty, EmptyContent, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
 
 
 
@@ -110,56 +111,67 @@ import AdminTransaction from '../components/Dashboard/AdminTransaction';
 
 
   return (
-
-
-
-
     <div className="bg-card h-min-screen p-6 ">
-        <h1 className="text-2xl font-medium py-2">Welcome to Admin Dashboard</h1>   
-        <p>Manage users, monitor system activity, and control financial data across the platform</p>
-      
+      <h1 className="text-2xl font-medium py-2">Welcome to Admin Dashboard</h1>
+      <p>
+        Manage users, monitor system activity, and control financial data across
+        the platform
+      </p>
+
       {/* Admin Summary cards */}
-         <h3 className='text-xl font-medium py-4 my-3 '>Admin Summary Cards</h3>
-        <div className='my-3 grid grid-cols-2 md:grid-cols-4 gap-6 '>
-            
-            <div className='w-full flex justify-between bg-background rounded-md shadow-md p-6'>
-              <div className='flex flex-col'>
-                 <span>Total User</span>
-                 <span className='font-bold text-xl'>{data?.totalUsers}</span>
-              </div>
-               <User />
-            </div>
-            <div className='w-full flex justify-between bg-background rounded-md shadow-md p-6'>
-              <div className='flex flex-col'>
-                 <span>Total Transaction</span>
-                 <span className='font-bold text-xl'>{data?.totalTransactions}</span>
-              </div>
-                <ArrowRightLeft />
-            </div>
-            <div className='w-full flex justify-between bg-background rounded-md shadow-md p-6'>
-              <div className='flex flex-col'>
-                 <span>Total Income</span>
-                 <span className='font-bold text-xl'>{data?.totalIncome}</span>
-              </div>
-                <span className='text-2xl'>📈</span>
-            </div>
-            <div className='w-full flex justify-between bg-background rounded-md shadow-md p-6'>
-              <div className='flex flex-col'>
-                 <span>Total Expense</span>
-                 <span className='font-bold text-xl'>{data?.totalExpense}</span>
-              </div>
-                <span className='text-2xl' >📉</span>
-            </div>
+      <h3 className="text-xl font-medium py-4 my-3 ">Admin Summary Cards</h3>
+      <div className="my-3 grid grid-cols-2 md:grid-cols-4 gap-6 ">
+        <div className="w-full flex justify-between bg-background rounded-md shadow-md p-6">
+          <div className="flex flex-col">
+            <span>Total User</span>
+            <span className="font-bold text-xl">{data?.totalUsers}</span>
+          </div>
+          <User />
         </div>
+        <div className="w-full flex justify-between bg-background rounded-md shadow-md p-6">
+          <div className="flex flex-col">
+            <span>Total Transaction</span>
+            <span className="font-bold text-xl">{data?.totalTransactions}</span>
+          </div>
+          <ArrowRightLeft />
+        </div>
+        <div className="w-full flex justify-between bg-background rounded-md shadow-md p-6">
+          <div className="flex flex-col">
+            <span>Total Income</span>
+            <span className="font-bold text-xl">{data?.totalIncome}</span>
+          </div>
+          <span className="text-2xl">📈</span>
+        </div>
+        <div className="w-full flex justify-between bg-background rounded-md shadow-md p-6">
+          <div className="flex flex-col">
+            <span>Total Expense</span>
+            <span className="font-bold text-xl">{data?.totalExpense}</span>
+          </div>
+          <span className="text-2xl">📉</span>
+        </div>
+      </div>
       {/* User Management  */}
-           <div>
-               <h3 className='text-xl font-medium py-4 my-3 '>User Management</h3>
-               <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
+      <div>
+        <h3 className="text-xl font-medium py-4 my-3 ">User Management</h3>
+        {Data.length === 0 ? (
+          <Empty className="flex justify-center items-center">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <FolderArchive />
+              </EmptyMedia>
+              <EmptyTitle> No platform activity yet.</EmptyTitle>
+            </EmptyHeader>
+            <EmptyContent>
+             
+            </EmptyContent>
+          </Empty>
+         ) : (
+          <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
             <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
               <thead className="bg-gray-100 text-gray-700 sticky top-0">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold">
-                   User
+                    User
                   </th>
                   <th className="px-4 py-2 text-left text-sm font-semibold">
                     Email
@@ -181,16 +193,12 @@ import AdminTransaction from '../components/Dashboard/AdminTransaction';
                     key={User._id}
                     className="hover:bg-chart-1 transition-colors duration-200"
                   >
-                    <td className="px-4 py-2">
-                       {User.name}
-                    </td>
+                    <td className="px-4 py-2">{User.name}</td>
                     <td className="px-4 py-2 ">{User.email}</td>
                     <td className="px-2 py-2 ">{User.role}</td>
-                    <td>
-                      Active
-                    </td>
+                    <td>Active</td>
                     <td className="px-2 py-2 flex ">
-                        Role
+                      Role
                       <button
                         className="p-1  text-sm  rounded cursor-pointer "
                         onClick={() => handleEdit(User)}
@@ -203,51 +211,51 @@ import AdminTransaction from '../components/Dashboard/AdminTransaction';
               </tbody>
             </table>
           </div>
-           </div>
+        )}
+      </div>
       {/* cateGory management */}
-       
+
       {/* Transaction monitoring */}
-         <h3 className='text-xl font-medium py-4 my-3 '>View All User's Transactions</h3>
-         <div>
-            <AdminTransaction 
-               User={Data}
-              />
-         </div>
+      <h3 className="text-xl font-medium py-4 my-3 ">
+        View All User's Transactions
+      </h3>
+      <div>
+        <AdminTransaction User={Data} />
+      </div>
 
+      {/* Alert Dialog */}
+      {/* alert Dialog  */}
+      <AlertDialog open={isOpen || !!editRole} onOpenChange={handleOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you absolutely sure to change the role ?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="text-lg font-medium pr-1">{editRole?.name}</span>
+              will take more power to see more sensitive data that the other
+              users are not allowed to see please carefully! he has a right to
+              change the other users Role
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-        {/* Alert Dialog */}
-         {/* alert Dialog  */}
-              <AlertDialog open={isOpen || !!editRole} onOpenChange={handleOpen}>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure to change the role ?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      <span className="text-lg font-medium pr-1">
-                        {editRole?.name}
-                      </span>
-                       will take more power to see more sensitive data that the other users are not allowed to see please carefully! he has a right to change the other users Role
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-        
-                    <Button onClick={updateRole}>
-                      {UpdateroleMutation.isPending ? (
-                        <span className="flex justify-center items-center gap-2">
-                          <Loader className="animate-spin" />
-                          updating
-                        </span>
-                      ) : (
-                        "Update"
-                      )}    
-                    </Button>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+            <Button onClick={updateRole}>
+              {UpdateroleMutation.isPending ? (
+                <span className="flex justify-center items-center gap-2">
+                  <Loader className="animate-spin" />
+                  updating
+                </span>
+              ) : (
+                "Update"
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
-  )
+  );
 }
 
 export default AdminPage
