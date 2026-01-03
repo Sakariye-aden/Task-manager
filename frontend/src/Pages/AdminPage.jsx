@@ -13,12 +13,10 @@ import {Button } from '@/components/ui/button'
 import toast from 'react-hot-toast';
 
 import { expenseCatag , getCategoryIcon } from './TransactionPage'
+import AdminTransaction from '../components/Dashboard/AdminTransaction';
 
 
 
-   console.log("Getag fn",getCategoryIcon('transport'));
-   
-   console.log('Expnse :', expenseCatag);
 
 
 
@@ -26,7 +24,9 @@ import { expenseCatag , getCategoryIcon } from './TransactionPage'
  
       const [ editRole , setEditRole ]=useState(null)
       const [isOpen , setIsOpen ]= useState(false);
-       
+      
+      
+
       const queryClient = useQueryClient()
 
 
@@ -53,7 +53,7 @@ import { expenseCatag , getCategoryIcon } from './TransactionPage'
            queryKey : ['adminInfo'],
            queryFn : async () => {
               const response = await api.get('/admin/userinfo');
-             
+           
               return response.data
            }
         })
@@ -103,12 +103,7 @@ import { expenseCatag , getCategoryIcon } from './TransactionPage'
        }
   }
 
-  const editCategory =(category)=>{
-        console.log('category clicked:',category);
-        console.log(expenseCatag.indexOf(category));
-  }
-
-
+  
 
 
 
@@ -210,20 +205,14 @@ import { expenseCatag , getCategoryIcon } from './TransactionPage'
           </div>
            </div>
       {/* cateGory management */}
-           {/* <h3 className='text-xl font-medium py-4 my-3 '>Category Management</h3>
-          <div>
-              {
-                expenseCatag.map((category, index)=>(
-                  <div key={index}>
-                     <span>{getCategoryIcon(category.toLowerCase())}</span>
-                     <span>{category}</span>
-                     <button onClick={()=>editCategory(category)}> <Pencil className="w-4 h-4 text-blue-500" /></button>
-                  </div>
-                ))
-              }
-          </div> */}
+       
       {/* Transaction monitoring */}
-
+         <h3 className='text-xl font-medium py-4 my-3 '>View All User's Transactions</h3>
+         <div>
+            <AdminTransaction 
+               User={Data}
+              />
+         </div>
 
 
         {/* Alert Dialog */}
