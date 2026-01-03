@@ -1,7 +1,7 @@
 import axios from "axios";
 import useAuthStore from '../Store/AuthStore'
 
-const Api_url = 'http://localhost:5000/api'
+const Api_url = 'https://fullstack-project-tioo.onrender.com/api'
 
 const api = axios.create({
   baseURL:Api_url,
