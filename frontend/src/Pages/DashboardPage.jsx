@@ -96,7 +96,7 @@ const DashboardPage = () => {
              <div className="flex p-2">
                <Avatar className="h-14 w-14 ">
                  <AvatarImage src="https://img.freepik.com/premium-vector/man-professional-business-casual-young-avatar-icon-illustration_1277826-629.jpg" />
-                 <AvatarFallback className='text-2xl font-medium'>{user.name[0]}</AvatarFallback>
+                 <AvatarFallback >{user.name[0]}</AvatarFallback>
                </Avatar>
                <div className="flex flex-col pl-2 inset-0 overflow-hidden ">
                  {isOpen && (
@@ -145,7 +145,7 @@ const DashboardPage = () => {
                </div>
                <Avatar className="h-10 w-10">
                  <AvatarImage src="https://img.freepik.com/premium-vector/man-professional-business-casual-young-avatar-icon-illustration_1277826-629.jpg" />
-                 <AvatarFallback>CN</AvatarFallback>
+                 <AvatarFallback>{useEffect.name[0]}</AvatarFallback>
                </Avatar>
              </div>
            </div>
