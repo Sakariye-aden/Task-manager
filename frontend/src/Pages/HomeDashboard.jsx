@@ -171,7 +171,7 @@ const HomeDashboard = () => {
           <Card className=" w-full bg-linear-to-r from-blue-500 to-blue-600">
             <CardContent className="h-12 flex flex-col text-primary-foreground">
               <span>Savings</span>
-              <span className="text-2xl font-medium">${12600}</span>
+              <span className="text-2xl font-medium">${TotalBalance}</span>
             </CardContent>
           </Card>
         </div>
