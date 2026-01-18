@@ -64,7 +64,7 @@ const AdminTransaction = ({ User }) => {
 
 
   return (
-    <div>
+    <div  className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
       <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
         <thead className="bg-gray-100 text-gray-700 sticky top-0 ">
           <tr>
@@ -103,7 +103,7 @@ const AdminTransaction = ({ User }) => {
           })}
         </tbody>
       </table>
-      <div className='flex justify-between my-4 '>
+      <div className='flex justify-between my-4 mx-4'>
         <span className='text-md font-medium'>
           {" "}
           Page {page} of {totalPages}{" "}

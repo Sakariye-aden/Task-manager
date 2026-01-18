@@ -368,9 +368,9 @@ export const expenseCatag = ["food & drink", "Housing", "Transport","Shoping","H
                     <td className="px-4 py-2">
                       {getCategoryIcon(item.category)}
                     </td>
-                    <td className="px-4 py-2 text-gray-800">{item.title}</td>
-                    <td className="px-4 py-2 text-gray-600">{item.category}</td>
-                    <td className="py-2 text-gray-500">
+                    <td className="px-4 py-2 ">{item.title}</td>
+                    <td className="px-4 py-2 ">{item.category}</td>
+                    <td className="py-2 ">
                       {formatShortDate(item.createdAt)}
                     </td>
                     <td

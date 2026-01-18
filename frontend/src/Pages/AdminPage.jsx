@@ -161,11 +161,9 @@ import { Empty, EmptyContent, EmptyHeader, EmptyMedia, EmptyTitle } from "@/comp
               </EmptyMedia>
               <EmptyTitle> No platform activity yet.</EmptyTitle>
             </EmptyHeader>
-            <EmptyContent>
-             
-            </EmptyContent>
+            <EmptyContent></EmptyContent>
           </Empty>
-         ) : (
+        ) : (
           <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
             <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
               <thead className="bg-gray-100 text-gray-700 sticky top-0">
@@ -225,35 +223,39 @@ import { Empty, EmptyContent, EmptyHeader, EmptyMedia, EmptyTitle } from "@/comp
 
       {/* Alert Dialog */}
       {/* alert Dialog  */}
-      <AlertDialog open={isOpen || !!editRole} onOpenChange={handleOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you absolutely sure to change the role ?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              <span className="text-lg font-medium pr-1">{editRole?.name}</span>
-              will take more power to see more sensitive data that the other
-              users are not allowed to see please carefully! he has a right to
-              change the other users Role
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-
-            <Button onClick={updateRole}>
-              {UpdateroleMutation.isPending ? (
-                <span className="flex justify-center items-center gap-2">
-                  <Loader className="animate-spin" />
-                  updating
+      <div className='p-2'>
+        <AlertDialog open={isOpen || !!editRole} onOpenChange={handleOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Are you absolutely sure to change the role ?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                <span className="text-lg font-medium pr-1">
+                  {editRole?.name}
                 </span>
-              ) : (
-                "Update"
-              )}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+                will take more power to see more sensitive data that the other
+                users are not allowed to see please carefully! he has a right to
+                change the other users Role
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+
+              <Button onClick={updateRole}>
+                {UpdateroleMutation.isPending ? (
+                  <span className="flex justify-center items-center gap-2">
+                    <Loader className="animate-spin" />
+                    updating
+                  </span>
+                ) : (
+                  "Update"
+                )}
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 }
